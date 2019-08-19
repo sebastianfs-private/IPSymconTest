@@ -1,0 +1,10 @@
+{
+  "elements":
+  [
+    { "type": "SelectVariable", "name": "SourceID", "caption": "Source" }
+  ],
+  "actions":
+  [
+    { "type": "Button", "label": "Update Value", "onClick": "FUM_UpdateValue($id);" }
+  ]
+}

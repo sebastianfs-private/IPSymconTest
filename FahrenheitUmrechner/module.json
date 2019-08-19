@@ -1,0 +1,14 @@
+{
+  "id": "{88DFB7F3-D39D-4E4E-AEEA-6DC2734661A6}",
+  "name": "FahrenheitUmrechner",
+  "type": 3,
+  "vendor": "",
+  "aliases":
+  [
+    "Super Fahrenheit Umrechner!"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "FUM"
+}
