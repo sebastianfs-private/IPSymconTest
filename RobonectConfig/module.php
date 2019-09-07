@@ -45,6 +45,8 @@ class RobonectConfig extends IPSModule
         $user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
 
+        $name = '';
+
         if ($ip != '' && $user != '' && $password != '') {
             
             $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
