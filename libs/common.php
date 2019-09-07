@@ -15,7 +15,7 @@ if (!defined('IS_UNAUTHORIZED')) {
     define('IS_DEVICE_MISSING', IS_EBASE + 5);
 }
 
-trait AutomowerCommon
+trait RobonectCommon
 {
     protected function SetValue($Ident, $Value)
     {

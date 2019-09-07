@@ -1,12 +1,11 @@
 {
-	"id": "{5D3A5F03-B872-4C4F-802C-65A654A7772C}",
-	"author": "Ch. Damsky",
-	"name": "IPSymconAutomowerConnect",
-	"url": "https://github.com/demel42/IPSymconAutomowerConnect",
+	"id": "{0B566692-7EF7-45EE-93BE-DCEB9D8DF572}",
+	"author": "Sebastian Fasold-Schmid",
+	"name": "IPSRobonect",
+	"url": "https://github.com/sebastianfs-private/IPSymconTest",
 	"compatibility": {
 		"version": "5.0"
 	},
-	"version": "1.12",
-	"build": 0,
-	"date": 1556202002
+	"version": "1.0",
+	"build": 1
 }
