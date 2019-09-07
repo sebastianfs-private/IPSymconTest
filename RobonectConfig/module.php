@@ -14,7 +14,7 @@ class RobonectConfig extends IPSModule
 		
 		$this->RegisterPropertyString('ip', '192.168.188.184');
         $this->RegisterPropertyString('user', 'sebastian');
-        $this->RegisterPropertyString('password', '31827JohanN');
+        $this->RegisterPropertyString('password', '');
     }
 
     public function ApplyChanges()
@@ -29,7 +29,7 @@ class RobonectConfig extends IPSModule
         if ($ip != '' || $user == '' || $password == '') {
             $ok = false;
         }
-        //$this->SetStatus($ok ? IS_ACTIVE : IS_UNAUTHORIZED);
+        $this->SetStatus($ok ? IS_ACTIVE : IS_UNAUTHORIZED);
     }
 
     public function GetConfigurationForm()
