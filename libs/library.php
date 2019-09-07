@@ -10,7 +10,7 @@ if (!defined('IS_UNAUTHORIZED')) {
 
 trait RobonectLibrary
 {
-	public function GetMowerStatus(bool $debug = false)
+	public function GetMowerStatus()
     {
 		$getDataUrl = array(
 			"status"  => "/json?cmd=status",
@@ -18,7 +18,7 @@ trait RobonectLibrary
 			"error"   => "/json?cmd=error"
 		);
 			
-		$content = $this->url_get_contents($getDataUrl['status'], $debug);
+		$content = $this->url_get_contents($getDataUrl['status']);
 
 		$status = json_decode($content, true);
 
@@ -34,21 +34,15 @@ trait RobonectLibrary
 		}
     }
 
-    public function url_get_contents(string $url, bool $debug = false)
+    public function url_get_contents(string $url)
 	{	
 		$ip = $this->ReadPropertyString('ip');
 		$user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
 
-        if($debug == true) echo $ip;
-        if($debug == true) echo $user;
-        if($debug == true) echo $password;
-
-		if($url !== ""){
+        if($url !== ""){
             
-            if($debug == true) echo $url;
-
-			$options = array(
+            $options = array(
 				'http' => array(
 					'method' => "GET",
 					'header' => "Connection: close\r\n". 
@@ -57,25 +51,18 @@ trait RobonectLibrary
 				)
             );
             
-            if($debug == true) echo "http://".$ip.$url;
-			
-			$context = stream_context_create( $options );
+            $context = stream_context_create( $options );
 			$content = @file_get_contents("http://".$ip.$url, false, $context);
 
 			if(!$content){
-				if($debug == true) echo "Meldung von \"url_get_contents\": ".error_get_last()['message']."\n";
 				return false;
 			}
 			else{
-				if($debug == true) echo $http_response_header[0]."\n\n";
-				if($debug == true) echo $content;
-				
 				if(substr($http_response_header[0], 9, -3) == 200) return $content;
 				else return false;
 			}
 		}
 		else{
-			if($debug == true) echo "Meldung von \"url_get_contents\": Logindaten falsch - Daten in keinem Array -> array(\"user\"=> \"username\", \"pass\"=> \"passwort\")\n";
 			return false;
 		}
 	}

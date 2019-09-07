@@ -49,7 +49,7 @@ class RobonectConfig extends IPSModule
             
             $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
             
-            $name = $this->GetMowerStatus($debug);
+            $name = $this->GetMowerStatus();
 
             // $getDataUrl = array(
 			// 	"status"  => "/json?cmd=status",
