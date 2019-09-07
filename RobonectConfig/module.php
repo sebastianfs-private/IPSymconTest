@@ -93,7 +93,6 @@ class RobonectConfig extends IPSModule
             'model'       => '330x',
             'with_gps'    => true
         ];
-        
         $pos = 1000;
         
         $ip = $this->ReadPropertyString('ip');
@@ -115,10 +114,15 @@ class RobonectConfig extends IPSModule
             }
         }
 
+        $this->SendDebug(__FUNCTION__, $instID, 0);
+
         if ($instID == '') {
+            $this->SendDebug(__FUNCTION__, "No instance found", 0);
+
             $instID = IPS_CreateInstance('{7A095C8E-EA88-4E6F-A010-A97BC234DCE3}');
             if ($instID == '') {
-                echo 'unable to create instance "' . $name . '"';
+                $this->SendDebug(__FUNCTION__, "unable to create instance", 0);
+                //echo 'unable to create instance "' . $name . '"';
                 return $instID;
             }
             IPS_SetProperty($instID, 'ip', $ip);
