@@ -118,9 +118,9 @@ class RobonectDevice extends IPSModule
     {
         parent::ApplyChanges();
 
+        $ip = $this->ReadPropertyString('ip');
         $user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
-        $device_id = $this->ReadPropertyString('device_id');
         $model = $this->ReadPropertyString('model');
         $with_gps = $this->ReadPropertyBoolean('with_gps');
         $save_position = $this->ReadPropertyBoolean('save_position');
@@ -151,7 +151,7 @@ class RobonectDevice extends IPSModule
             return;
         }
 
-        if ($user != '' || $password != '' || $device_id != '') {
+        if ($user != '' || $password != '' || $ip != '') {
             $this->SetUpdateInterval();
             // Inspired by module SymconTest/HookServe
             // We need to call the RegisterHook function on Kernel READY
@@ -163,16 +163,16 @@ class RobonectDevice extends IPSModule
             $this->SetStatus(IS_INACTIVE);
         }
 
-        $this->SetSummary($device_id);
+        $this->SetSummary($ip);
     }
 
     public function GetConfigurationForm()
     {
         $formElements = [];
         $formElements[] = ['type' => 'CheckBox', 'name' => 'module_disable', 'caption' => 'Instance is disabled'];
+        $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'ip', 'caption' => 'IP-Address'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'user', 'caption' => 'User'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'password', 'caption' => 'Password'];
-        $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'device_id', 'caption' => 'Device-ID'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'model', 'caption' => 'Model'];
         $formElements[] = ['type' => 'CheckBox', 'name' => 'with_gps', 'caption' => 'with GPS-Data'];
         $formElements[] = ['type' => 'Label', 'label' => 'save position to (logged) variable \'Position\''];
@@ -222,12 +222,12 @@ class RobonectDevice extends IPSModule
 
     public function UpdateStatus()
     {
-        $device_id = $this->ReadPropertyString('device_id');
+        $ip = $this->ReadPropertyString('ip');
         $model = $this->ReadPropertyString('model');
         $with_gps = $this->ReadPropertyBoolean('with_gps');
         $save_position = $this->ReadPropertyBoolean('save_position');
 
-        $cdata = $this->do_ApiCall($this->url_track . 'mowers/' . $device_id . '/status');
+        //$cdata = $this->do_ApiCall($this->url_track . 'mowers/' . $ip . '/status');
         if ($cdata == '') {
             $this->SetValue('Connected', false);
             return false;
@@ -374,8 +374,8 @@ class RobonectDevice extends IPSModule
         }
 
         // bisher unausgewertet url's:
-        //  - $this->url_track . 'mowers/' . $device_id . '/settings'
-        //  - $this->url_track . 'mowers/' . $device_id . '/geofence'
+        //  - $this->url_track . 'mowers/' . $ip . '/settings'
+        //  - $this->url_track . 'mowers/' . $ip . '/geofence'
     }
 
     public function TestAccount()
@@ -387,7 +387,7 @@ class RobonectDevice extends IPSModule
             return;
         }
 
-        $device_id = $this->ReadPropertyString('device_id');
+        $ip = $this->ReadPropertyString('ip');
 
         $mowers = $this->GetMowerList();
         if ($mowers == '') {
@@ -398,16 +398,16 @@ class RobonectDevice extends IPSModule
 
         $msg = '';
         $mower_found = false;
-        foreach ($mowers as $mower) {
-            if ($device_id == $mower['id']) {
-                $mower_found = true;
-            }
-            $name = $mower['name'];
-            $model = $mower['model'];
+        // foreach ($mowers as $mower) {
+        //     if ($device_id == $mower['id']) {
+        //         $mower_found = true;
+        //     }
+        //     $name = $mower['name'];
+        //     $model = $mower['model'];
 
-            $msg = $this->Translate('mower') . ' "' . $name . '", ' . $this->Translate('model') . '=' . $model;
-            $this->SendDebug(__FUNCTION__, 'device_id=' . $device_id . ', name=' . $name . ', model=' . $model, 0);
-        }
+        //     $msg = $this->Translate('mower') . ' "' . $name . '", ' . $this->Translate('model') . '=' . $model;
+        //     $this->SendDebug(__FUNCTION__, 'device_id=' . $device_id . ', name=' . $name . ', model=' . $model, 0);
+        // }
 
         if (!$mower_found) {
             $this->SetStatus(IS_DEVICE_MISSING);
@@ -555,13 +555,13 @@ class RobonectDevice extends IPSModule
 
     private function MowerCmd($cmd)
     {
-        $device_id = $this->ReadPropertyString('device_id');
+        $ip = $this->ReadPropertyString('ip');
 
         $postdata = [
                 'action' => $cmd
             ];
 
-        $cdata = $this->do_ApiCall($this->url_track . 'mowers/' . $device_id . '/control', $postdata);
+        $cdata = $this->do_ApiCall($this->url_track . 'mowers/' . $ip . '/control', $postdata);
         if ($cdata == '') {
             return false;
         }
