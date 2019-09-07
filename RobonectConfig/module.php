@@ -48,7 +48,7 @@ class RobonectConfig extends IPSModule
         if ($ip != '' || $user != '' || $password != '') {
             $debug = True;
 
-            if($debug == true) echo 'true';
+            if($debug == true) $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
 
             // $getDataUrl = array(
 			// 	"status"  => "/json?cmd=status",
