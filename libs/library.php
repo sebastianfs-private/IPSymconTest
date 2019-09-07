@@ -12,12 +12,23 @@ trait RobonectLibrary
 {
 	public function GetMowerStatus()
     {
-        $cdata = $this->do_ApiCall($this->url_track . 'mowers');
-        if ($cdata == '') {
-            return false;
-        }
-        $mowers = json_decode($cdata, true);
-        return $mowers;
+		$getDataUrl = array(
+			"status"  => "/json?cmd=status",
+			"version" => "/json?cmd=version",
+			"error"   => "/json?cmd=error"
+		);
+			
+		$content = $this->url_get_contents($getDataUrl['status'], $debug);
+
+		$status = json_decode($content, true);
+
+		if($status['successful'] == true){
+			$name = $status['name'];
+			return $name;
+		}
+		else {
+			return false;
+		}
     }
 
     public function url_get_contents($url, $debug = false)

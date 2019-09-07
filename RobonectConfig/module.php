@@ -72,13 +72,13 @@ class RobonectConfig extends IPSModule
                             'type'    => 'Button',
                             'caption' => 'Import of mower',
                             'confirm' => 'Triggering the function creates the instances for the selected Automower-device. Are you sure?',
-                            'onClick' => 'AutomowerConfig_Doit($id, $mower_name);'
+                            'onClick' => 'RobonectConfig_GetMowerStatus($id);'
                         ];
         $formActions[] = ['type' => 'Label', 'label' => '____________________________________________________________________________________________________'];
         $formActions[] = [
                             'type'    => 'Button',
                             'caption' => 'Module description',
-                            'onClick' => 'echo "https://github.com/demel42/IPSymconAutomowerConnect/blob/master/README.md";'
+                            'onClick' => 'echo "https://github.com/sebastianfs-private/IPSymconRobonect/blob/master/README.md";'
                         ];
 
         $formStatus = [];
