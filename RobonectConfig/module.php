@@ -88,7 +88,7 @@ class RobonectConfig extends IPSModule
 
     private function FindOrCreateInstance($name)
     {   
-        $info = '330x'
+        $info = '330x';
         $properties = [
             'model'       => '330x',
             'with_gps'    => true
