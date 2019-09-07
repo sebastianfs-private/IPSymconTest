@@ -10,7 +10,7 @@ if (!defined('IS_UNAUTHORIZED')) {
 
 trait RobonectLibrary
 {
-	public function GetMowerStatus($debug = false)
+	public function GetMowerStatus(bool $debug = false)
     {
 		$getDataUrl = array(
 			"status"  => "/json?cmd=status",
@@ -32,7 +32,7 @@ trait RobonectLibrary
 		}
     }
 
-    public function url_get_contents($url, $debug = false)
+    public function url_get_contents(string $url, bool $debug = false)
 	{	
 		$ip = $this->ReadPropertyString('ip');
 		$user = $this->ReadPropertyString('user');
