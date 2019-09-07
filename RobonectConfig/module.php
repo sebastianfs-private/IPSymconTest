@@ -35,6 +35,7 @@ class RobonectConfig extends IPSModule
     public function GetConfigurationForm()
     {
         $formElements = [];
+        $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'ip', 'caption' => 'IP-Address'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'user', 'caption' => 'User'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'password', 'caption' => 'Password'];
 
