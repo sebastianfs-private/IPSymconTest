@@ -232,7 +232,7 @@ class RobonectDevice extends IPSModule
             $this->SetValue('Connected', false);
             return false;
         }
-        $status = json_decode($cdata, true);
+        
         $this->SendDebug(__FUNCTION__, 'status=' . print_r($status['successful'], true), 0);
 
         // $batteryPercent = $status['batteryPercent'];
