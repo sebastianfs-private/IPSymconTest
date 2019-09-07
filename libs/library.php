@@ -25,7 +25,11 @@ trait RobonectLibrary
 		$this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
 
 		if($status['successful'] == true){
+
+			$this->SendDebug(__FUNCTION__, 'Status: sucessful', 0);
 			$name = $status['name'];
+
+			$this->SendDebug(__FUNCTION__, $name, 0);
 			
 			return $name;
 		}
