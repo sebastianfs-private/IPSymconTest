@@ -227,151 +227,151 @@ class RobonectDevice extends IPSModule
         $with_gps = $this->ReadPropertyBoolean('with_gps');
         $save_position = $this->ReadPropertyBoolean('save_position');
 
-        //$cdata = $this->do_ApiCall($this->url_track . 'mowers/' . $ip . '/status');
+        $cdata = $this->GetMowerStatus();
         if ($cdata == '') {
             $this->SetValue('Connected', false);
             return false;
         }
         $status = json_decode($cdata, true);
-        $this->SendDebug(__FUNCTION__, 'status=' . print_r($status, true), 0);
+        $this->SendDebug(__FUNCTION__, 'status=' . print_r($status['successful'], true), 0);
 
-        $batteryPercent = $status['batteryPercent'];
-        $this->SetValue('Battery', $batteryPercent);
+        // $batteryPercent = $status['batteryPercent'];
+        // $this->SetValue('Battery', $batteryPercent);
 
-        $connected = $status['connected'];
-        $this->SetValue('Connected', $connected);
+        // $connected = $status['connected'];
+        // $this->SetValue('Connected', $connected);
 
-        $mowerStatus = $this->decode_mowerStatus($status['mowerStatus']);
-        $this->SendDebug(__FUNCTION__, 'mowerStatus="' . $status['mowerStatus'] . '" => MowerStatus=' . $mowerStatus, 0);
-        $this->SetValue('MowerStatus', $mowerStatus);
+        // $mowerStatus = $this->decode_mowerStatus($status['mowerStatus']);
+        // $this->SendDebug(__FUNCTION__, 'mowerStatus="' . $status['mowerStatus'] . '" => MowerStatus=' . $mowerStatus, 0);
+        // $this->SetValue('MowerStatus', $mowerStatus);
 
-        $oldActivity = $this->GetValue('MowerActivity');
-        switch ($oldActivity) {
-            case AUTOMOWER_ACTIVITY_MOVING:
-            case AUTOMOWER_ACTIVITY_CUTTING:
-                $wasWorking = true;
-                break;
-            default:
-                $wasWorking = false;
-                break;
-        }
-        $this->SendDebug(__FUNCTION__, 'wasWorking=' . $wasWorking, 0);
+        // $oldActivity = $this->GetValue('MowerActivity');
+        // switch ($oldActivity) {
+        //     case AUTOMOWER_ACTIVITY_MOVING:
+        //     case AUTOMOWER_ACTIVITY_CUTTING:
+        //         $wasWorking = true;
+        //         break;
+        //     default:
+        //         $wasWorking = false;
+        //         break;
+        // }
+        // $this->SendDebug(__FUNCTION__, 'wasWorking=' . $wasWorking, 0);
 
-        $mowerActivity = $this->normalize_mowerStatus($status['mowerStatus']);
-        $this->SendDebug(__FUNCTION__, 'MowerActivity=' . $mowerActivity, 0);
-        $this->SetValue('MowerActivity', $mowerActivity);
+        // $mowerActivity = $this->normalize_mowerStatus($status['mowerStatus']);
+        // $this->SendDebug(__FUNCTION__, 'MowerActivity=' . $mowerActivity, 0);
+        // $this->SetValue('MowerActivity', $mowerActivity);
 
-        switch ($mowerActivity) {
-            case AUTOMOWER_ACTIVITY_DISABLED:
-            case AUTOMOWER_ACTIVITY_PAUSED:
-            case AUTOMOWER_ACTIVITY_PARKED:
-            case AUTOMOWER_ACTIVITY_CHARGING:
-                $action = AUTOMOWER_ACTION_START;
-                break;
-            case AUTOMOWER_ACTIVITY_MOVING:
-            case AUTOMOWER_ACTIVITY_CUTTING:
-                $action = AUTOMOWER_ACTION_PARK;
-                break;
-            default:
-                $action = AUTOMOWER_ACTION_STOP;
-                break;
-        }
-        $this->SendDebug(__FUNCTION__, 'MowerAction=' . $action, 0);
-        $this->SetValue('MowerAction', $action);
+        // switch ($mowerActivity) {
+        //     case AUTOMOWER_ACTIVITY_DISABLED:
+        //     case AUTOMOWER_ACTIVITY_PAUSED:
+        //     case AUTOMOWER_ACTIVITY_PARKED:
+        //     case AUTOMOWER_ACTIVITY_CHARGING:
+        //         $action = AUTOMOWER_ACTION_START;
+        //         break;
+        //     case AUTOMOWER_ACTIVITY_MOVING:
+        //     case AUTOMOWER_ACTIVITY_CUTTING:
+        //         $action = AUTOMOWER_ACTION_PARK;
+        //         break;
+        //     default:
+        //         $action = AUTOMOWER_ACTION_STOP;
+        //         break;
+        // }
+        // $this->SendDebug(__FUNCTION__, 'MowerAction=' . $action, 0);
+        // $this->SetValue('MowerAction', $action);
 
-        $nextStartSource = $status['nextStartSource'];
+        // $nextStartSource = $status['nextStartSource'];
 
-        $nextStartTimestamp = $status['nextStartTimestamp'];
-        if ($nextStartTimestamp > 0) {
-            // 'nextStartTimestamp' ist nicht UTC sondern auf localtime umgerechnet.
-            $ts = strtotime(gmdate('Y-m-d H:i', $nextStartTimestamp));
-        } else {
-            $ts = 0;
-        }
-        $this->SetValue('NextStart', $ts);
+        // $nextStartTimestamp = $status['nextStartTimestamp'];
+        // if ($nextStartTimestamp > 0) {
+        //     // 'nextStartTimestamp' ist nicht UTC sondern auf localtime umgerechnet.
+        //     $ts = strtotime(gmdate('Y-m-d H:i', $nextStartTimestamp));
+        // } else {
+        //     $ts = 0;
+        // }
+        // $this->SetValue('NextStart', $ts);
 
-        $operatingMode = $this->decode_operatingMode($status['operatingMode']);
-        $this->SendDebug(__FUNCTION__, 'operatingMode="' . $status['operatingMode'] . '" => OperationMode=' . $operatingMode, 0);
-        $this->SetValue('OperationMode', $operatingMode);
+        // $operatingMode = $this->decode_operatingMode($status['operatingMode']);
+        // $this->SendDebug(__FUNCTION__, 'operatingMode="' . $status['operatingMode'] . '" => OperationMode=' . $operatingMode, 0);
+        // $this->SetValue('OperationMode', $operatingMode);
 
-        if ($with_gps) {
-            if (isset($status['lastLocations'][0]['longitude'])) {
-                $lon = $status['lastLocations'][0]['longitude'];
-                $this->SetValue('LastLongitude', $lon);
-            }
-            if (isset($status['lastLocations'][0]['latitude'])) {
-                $lat = $status['lastLocations'][0]['latitude'];
-                $this->SetValue('LastLatitude', $lat);
-            }
-        }
+        // if ($with_gps) {
+        //     if (isset($status['lastLocations'][0]['longitude'])) {
+        //         $lon = $status['lastLocations'][0]['longitude'];
+        //         $this->SetValue('LastLongitude', $lon);
+        //     }
+        //     if (isset($status['lastLocations'][0]['latitude'])) {
+        //         $lat = $status['lastLocations'][0]['latitude'];
+        //         $this->SetValue('LastLatitude', $lat);
+        //     }
+        // }
 
-        $this->SetValue('LastStatus', time());
+        // $this->SetValue('LastStatus', time());
 
-        $lastErrorCode = $status['lastErrorCode'];
-        $lastErrorCodeTimestamp = $status['lastErrorCodeTimestamp'];
-        if ($lastErrorCode) {
-            $msg = __FUNCTION__ . ': error-code=' . $lastErrorCode . ' @' . date('d-m-Y H:i:s', $lastErrorCodeTimestamp);
-            $this->LogMessage($msg, KL_WARNING);
-        } else {
-            $lastErrorCodeTimestamp = 0;
-        }
-        $this->SetValue('LastErrorCode', $lastErrorCode);
-        $this->SetValue('LastErrorTimestamp', $lastErrorCodeTimestamp);
+        // $lastErrorCode = $status['lastErrorCode'];
+        // $lastErrorCodeTimestamp = $status['lastErrorCodeTimestamp'];
+        // if ($lastErrorCode) {
+        //     $msg = __FUNCTION__ . ': error-code=' . $lastErrorCode . ' @' . date('d-m-Y H:i:s', $lastErrorCodeTimestamp);
+        //     $this->LogMessage($msg, KL_WARNING);
+        // } else {
+        //     $lastErrorCodeTimestamp = 0;
+        // }
+        // $this->SetValue('LastErrorCode', $lastErrorCode);
+        // $this->SetValue('LastErrorTimestamp', $lastErrorCodeTimestamp);
 
-        $dt = new DateTime(date('d.m.Y 00:00:00'));
-        $ts_today = $dt->format('U');
-        $ts_watch = $this->GetValue('DailyReference');
-        if ($ts_today != $ts_watch) {
-            $this->SetValue('DailyReference', $ts_today);
-            $this->SetValue('DailyWorking', 0);
-        }
-        switch ($mowerActivity) {
-            case AUTOMOWER_ACTIVITY_MOVING:
-            case AUTOMOWER_ACTIVITY_CUTTING:
-                $isWorking = true;
-                break;
-            default:
-                $isWorking = false;
-                break;
-        }
-        $tstamp = $this->GetBuffer('Working');
-        $this->SendDebug(__FUNCTION__, 'isWorking=' . $isWorking . ', tstamp[GET]=' . $tstamp, 0);
+        // $dt = new DateTime(date('d.m.Y 00:00:00'));
+        // $ts_today = $dt->format('U');
+        // $ts_watch = $this->GetValue('DailyReference');
+        // if ($ts_today != $ts_watch) {
+        //     $this->SetValue('DailyReference', $ts_today);
+        //     $this->SetValue('DailyWorking', 0);
+        // }
+        // switch ($mowerActivity) {
+        //     case AUTOMOWER_ACTIVITY_MOVING:
+        //     case AUTOMOWER_ACTIVITY_CUTTING:
+        //         $isWorking = true;
+        //         break;
+        //     default:
+        //         $isWorking = false;
+        //         break;
+        // }
+        // $tstamp = $this->GetBuffer('Working');
+        // $this->SendDebug(__FUNCTION__, 'isWorking=' . $isWorking . ', tstamp[GET]=' . $tstamp, 0);
 
-        if ($tstamp != '') {
-            $daily_working = $this->GetBuffer('DailyWorking');
-            $duration = $daily_working + ((time() - $tstamp) / 60);
-            $this->SetValue('DailyWorking', $duration);
-            $this->SendDebug(__FUNCTION__, 'daily_working[GET]=' . $daily_working . ', duration=' . $duration, 0);
-            if (!$isWorking) {
-                $this->SetBuffer('Working', '');
-                $this->SetBuffer('DailyWorking', 0);
-                $this->SendDebug(__FUNCTION__, 'tstamp[CLR], daily_working[CLR]', 0);
-            }
-        } else {
-            if ($isWorking) {
-                $tstamp = time();
-                $this->SetBuffer('Working', $tstamp);
-                $daily_working = $this->GetValue('DailyWorking');
-                $this->SetBuffer('DailyWorking', $daily_working);
-                $this->SendDebug(__FUNCTION__, 'tstamp[SET]=' . $tstamp . ', daily_working[SET]=' . $daily_working, 0);
-            }
-        }
+        // if ($tstamp != '') {
+        //     $daily_working = $this->GetBuffer('DailyWorking');
+        //     $duration = $daily_working + ((time() - $tstamp) / 60);
+        //     $this->SetValue('DailyWorking', $duration);
+        //     $this->SendDebug(__FUNCTION__, 'daily_working[GET]=' . $daily_working . ', duration=' . $duration, 0);
+        //     if (!$isWorking) {
+        //         $this->SetBuffer('Working', '');
+        //         $this->SetBuffer('DailyWorking', 0);
+        //         $this->SendDebug(__FUNCTION__, 'tstamp[CLR], daily_working[CLR]', 0);
+        //     }
+        // } else {
+        //     if ($isWorking) {
+        //         $tstamp = time();
+        //         $this->SetBuffer('Working', $tstamp);
+        //         $daily_working = $this->GetValue('DailyWorking');
+        //         $this->SetBuffer('DailyWorking', $daily_working);
+        //         $this->SendDebug(__FUNCTION__, 'tstamp[SET]=' . $tstamp . ', daily_working[SET]=' . $daily_working, 0);
+        //     }
+        // }
 
-        if (isset($status['lastLocations'])) {
-            $lastLocations = $status['lastLocations'];
-            $this->SetBuffer('LastLocations', json_encode($lastLocations));
-            if ($save_position && ($wasWorking || $isWorking)) {
-                if (count($lastLocations)) {
-                    $latitude = (float) $this->format_float($lastLocations[0]['latitude'], 6);
-                    $longitude = (float) $this->format_float($lastLocations[0]['longitude'], 6);
-                    $pos = json_encode(['latitude'  => $latitude, 'longitude' => $longitude]);
-                    if ($this->GetValue('Position') != $pos) {
-                        $this->SetValue('Position', $pos);
-                        $this->SendDebug(__FUNCTION__, 'changed Position=' . $pos, 0);
-                    }
-                }
-            }
-        }
+        // if (isset($status['lastLocations'])) {
+        //     $lastLocations = $status['lastLocations'];
+        //     $this->SetBuffer('LastLocations', json_encode($lastLocations));
+        //     if ($save_position && ($wasWorking || $isWorking)) {
+        //         if (count($lastLocations)) {
+        //             $latitude = (float) $this->format_float($lastLocations[0]['latitude'], 6);
+        //             $longitude = (float) $this->format_float($lastLocations[0]['longitude'], 6);
+        //             $pos = json_encode(['latitude'  => $latitude, 'longitude' => $longitude]);
+        //             if ($this->GetValue('Position') != $pos) {
+        //                 $this->SetValue('Position', $pos);
+        //                 $this->SendDebug(__FUNCTION__, 'changed Position=' . $pos, 0);
+        //             }
+        //         }
+        //     }
+        // }
 
         // bisher unausgewertet url's:
         //  - $this->url_track . 'mowers/' . $ip . '/settings'
