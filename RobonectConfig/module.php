@@ -49,6 +49,8 @@ class RobonectConfig extends IPSModule
             $debug = True;
 
             if($debug == true) $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
+            
+            $name = $this->GetMowerStatus();
 
             // $getDataUrl = array(
 			// 	"status"  => "/json?cmd=status",
@@ -67,7 +69,7 @@ class RobonectConfig extends IPSModule
         }
 
         $formActions = [];
-        $formActions[] = ['type' => 'Select', 'name' => 'mower_name', 'caption' => 'Mower-Name', 'options' => $options];
+        $formActions[] = ['type' => 'ValidationTextBox', 'name' => 'mower_name', 'caption' => 'Mower-Name', 'value' => $name];
         $formActions[] = [
                             'type'    => 'Button',
                             'caption' => 'Import of mower',

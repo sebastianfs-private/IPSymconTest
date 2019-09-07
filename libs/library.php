@@ -24,6 +24,7 @@ trait RobonectLibrary
 
 		if($status['successful'] == true){
 			$name = $status['name'];
+			
 			return $name;
 		}
 		else {
