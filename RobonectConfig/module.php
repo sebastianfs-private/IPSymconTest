@@ -61,7 +61,7 @@ class RobonectConfig extends IPSModule
                             'type'    => 'Button',
                             'caption' => 'Import of mower',
                             'confirm' => 'Triggering the function creates the instances for the selected Automower-device. Are you sure?',
-                            'onClick' => 'RobonectConfig_GetMowerStatus($id, false);'
+                            'onClick' => 'RobonectConfig_FindOrCreateInstance($id, "Flip");'
                         ];
         $formActions[] = ['type' => 'Label', 'label' => '____________________________________________________________________________________________________'];
         $formActions[] = [
@@ -84,5 +84,56 @@ class RobonectConfig extends IPSModule
         $formStatus[] = ['code' => IS_DEVICE_MISSING, 'icon' => 'error', 'caption' => 'Instance is inactive (device missing)'];
 
         return json_encode(['elements' => $formElements, 'actions' => $formActions, 'status' => $formStatus]);
+    }
+
+    private function FindOrCreateInstance($name)
+    {   
+        $info = '330x'
+        $properties = [
+            'model'       => '330x',
+            'with_gps'    => true
+        ];
+        
+        $pos = 1000;
+        
+        $ip = $this->ReadPropertyString('ip');
+        $user = $this->ReadPropertyString('user');
+        $password = $this->ReadPropertyString('password');
+
+        $instID = '';
+
+        $instIDs = IPS_GetInstanceListByModuleID('{7A095C8E-EA88-4E6F-A010-A97BC234DCE3}');
+        foreach ($instIDs as $id) {
+            $cfg = IPS_GetConfiguration($id);
+            $jcfg = json_decode($cfg, true);
+            if (!isset($jcfg['ip'])) {
+                continue;
+            }
+            if ($jcfg['ip'] == $device_id) {
+                $instID = $id;
+                break;
+            }
+        }
+
+        if ($instID == '') {
+            $instID = IPS_CreateInstance('{7A095C8E-EA88-4E6F-A010-A97BC234DCE3}');
+            if ($instID == '') {
+                echo 'unable to create instance "' . $name . '"';
+                return $instID;
+            }
+            IPS_SetProperty($instID, 'ip', $ip);
+            IPS_SetProperty($instID, 'user', $user);
+            IPS_SetProperty($instID, 'password', $password);
+            foreach ($properties as $key => $property) {
+                IPS_SetProperty($instID, $key, $property);
+            }
+            IPS_SetName($instID, $name);
+            IPS_SetInfo($instID, $info);
+            IPS_SetPosition($instID, $pos);
+        }
+
+        IPS_ApplyChanges($instID);
+
+        return $instID;
     }
 }
