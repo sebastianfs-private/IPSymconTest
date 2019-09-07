@@ -14,7 +14,7 @@ class RobonectConfig extends IPSModule
 		
 		$this->RegisterPropertyString('ip', '192.168.188.184');
         $this->RegisterPropertyString('user', 'sebastian');
-        $this->RegisterPropertyString('password', '');
+        $this->RegisterPropertyString('password', '31827JohanN');
     }
 
     public function ApplyChanges()
