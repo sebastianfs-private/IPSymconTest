@@ -22,6 +22,8 @@ trait RobonectLibrary
 
 		$status = json_decode($content, true);
 
+		$this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
+
 		if($status['successful'] == true){
 			$name = $status['name'];
 			
