@@ -10,6 +10,16 @@ if (!defined('IS_UNAUTHORIZED')) {
 
 trait RobonectLibrary
 {
+	public function GetMowerStatus()
+    {
+        $cdata = $this->do_ApiCall($this->url_track . 'mowers');
+        if ($cdata == '') {
+            return false;
+        }
+        $mowers = json_decode($cdata, true);
+        return $mowers;
+    }
+
     public function url_get_contents($url, $debug = false)
 	{	
 		$ip = $this->ReadPropertyString('ip');
