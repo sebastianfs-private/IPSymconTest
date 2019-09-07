@@ -12,15 +12,16 @@ class RobonectConfig extends IPSModule
     {
         parent::Create();
 		
-		$this->RegisterPropertyString('ip', '');
-        $this->RegisterPropertyString('user', '');
-        $this->RegisterPropertyString('password', '');
+		$this->RegisterPropertyString('ip', '192.168.188.184');
+        $this->RegisterPropertyString('user', 'sebastian');
+        $this->RegisterPropertyString('password', '31827JohanN');
     }
 
     public function ApplyChanges()
     {
         parent::ApplyChanges();
-
+        
+        $ip = $this->RegisterPropertyString('ip', '');
         $user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
 
@@ -39,6 +40,7 @@ class RobonectConfig extends IPSModule
 
         $options = [];
 
+        $ip = $this->RegisterPropertyString('ip', '');
         $user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
 
