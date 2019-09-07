@@ -47,26 +47,12 @@ class RobonectConfig extends IPSModule
 
         if ($ip != '' && $user != '' && $password != '') {
             
-            $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
+            $this->SendDebug(__FUNCTION__, 'Properties completely set', 0);
             
-            $name = $this->GetMowerStatus();
-            $options[] = ['label' => $name, 'value' => $name];
-            
+            $status = $this->GetMowerStatus();
+            $options[] = ['label' => $status['name'], 'value' => $status['name']];
+
             $this->SendDebug(__FUNCTION__, $name, 0);
-            // $getDataUrl = array(
-			// 	"status"  => "/json?cmd=status",
-			// 	"version" => "/json?cmd=version",
-			// 	"error"   => "/json?cmd=error"
-			// );
-				
-			// $content = $this->url_get_contents($getDataUrl['status'], $debug);
-
-			// $status = json_decode($content, true);
-
-			// if($status['successful'] == true){
-			// 	$name = $status['name'];
-			// 	$options[] = ['label' => $name, 'value' => $name];
-			// }
         }
 
         $formActions = [];
