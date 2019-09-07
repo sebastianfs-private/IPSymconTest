@@ -20,7 +20,7 @@ if (!defined('AUTOMOWER_ACTION_PARK')) {
     define('AUTOMOWER_ACTION_STOP', 2);
 }
 
-class RobonectDevice extends IPSModule
+class RobonectDevice2 extends IPSModule
 {
     use RobonectCommon;
     use RobonectLibrary;
