@@ -108,7 +108,7 @@ class RobonectConfig extends IPSModule
             if (!isset($jcfg['ip'])) {
                 continue;
             }
-            if ($jcfg['ip'] == $device_id) {
+            if ($jcfg['ip'] == $ip) {
                 $instID = $id;
                 break;
             }
