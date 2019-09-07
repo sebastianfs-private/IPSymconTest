@@ -21,7 +21,7 @@ class RobonectConfig extends IPSModule
     {
         parent::ApplyChanges();
         
-        $ip = $this->ReadPropertyString('ip', '');
+        $ip = $this->ReadPropertyString('ip');
         $user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
 
@@ -40,7 +40,7 @@ class RobonectConfig extends IPSModule
 
         $options = [];
 
-        $ip = $this->ReadPropertyString('ip', '');
+        $ip = $this->ReadPropertyString('ip');
         $user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
 
