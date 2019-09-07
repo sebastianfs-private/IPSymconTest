@@ -39,18 +39,15 @@ class RobonectConfig extends IPSModule
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'user', 'caption' => 'User'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'password', 'caption' => 'Password'];
 
-        $this->SendDebug("Fetch", "Fetched day", 0);
-
         $options = [];
 
         $ip = $this->ReadPropertyString('ip');
         $user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
 
-        if ($ip != '' || $user != '' || $password != '') {
-            $debug = false;
-
-            if($debug == true) $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
+        if ($ip != '' && $user != '' && $password != '') {
+            
+            $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
             
             $name = $this->GetMowerStatus($debug);
 
