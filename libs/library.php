@@ -19,11 +19,9 @@ trait RobonectLibrary
 		);
 			
 		$content = $this->url_get_contents($getDataUrl['status']);
-
+		
 		$status = json_decode($content, true);
-
 		if($status['successful'] == true){
-
 			$this->SendDebug(__FUNCTION__, 'Status: successful', 0);
 			$this->SendDebug(__FUNCTION__, $status['name'], 0);
 			
