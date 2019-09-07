@@ -39,6 +39,8 @@ class RobonectConfig extends IPSModule
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'user', 'caption' => 'User'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'password', 'caption' => 'Password'];
 
+        $this->SendDebug("Fetch", "Fetched day", 0);
+
         $options = [];
 
         $ip = $this->ReadPropertyString('ip');
