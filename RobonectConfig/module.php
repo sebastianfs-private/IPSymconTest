@@ -86,7 +86,7 @@ class RobonectConfig extends IPSModule
         return json_encode(['elements' => $formElements, 'actions' => $formActions, 'status' => $formStatus]);
     }
 
-    private function FindOrCreateInstance($name)
+    public function FindOrCreateInstance($name)
     {   
         $info = '330x';
         $properties = [
