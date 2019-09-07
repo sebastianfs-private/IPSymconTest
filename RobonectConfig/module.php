@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 
 require_once __DIR__ . '/../libs/common.php';  // globale Funktionen
 require_once __DIR__ . '/../libs/library.php';  // modul-bezogene Funktionen
@@ -29,7 +29,7 @@ class RobonectConfig extends IPSModule
         if ($ip != '' || $user == '' || $password == '') {
             $ok = false;
         }
-        $this->SetStatus($ok ? IS_ACTIVE : IS_UNAUTHORIZED);
+        //$this->SetStatus($ok ? IS_ACTIVE : IS_UNAUTHORIZED);
     }
 
     public function GetConfigurationForm()
@@ -47,9 +47,10 @@ class RobonectConfig extends IPSModule
 
         if ($ip != '' || $user != '' || $password != '') {
             $debug = True;
+
             if($debug == true) echo 'true';
 
-			$getDataUrl = array(
+            $getDataUrl = array(
 				"status"  => "/json?cmd=status",
 				"version" => "/json?cmd=version",
 				"error"   => "/json?cmd=error"
@@ -60,8 +61,8 @@ class RobonectConfig extends IPSModule
 			// $status = json_decode($content, true);
 
 			// if($status['successful'] == true){
-			//     $name = $status['name'];
-			//     $options[] = ['label' => $name, 'value' => $name];
+			// 	$name = $status['name'];
+			// 	$options[] = ['label' => $name, 'value' => $name];
 			// }
         }
 
@@ -95,4 +96,4 @@ class RobonectConfig extends IPSModule
 
         return json_encode(['elements' => $formElements, 'actions' => $formActions, 'status' => $formStatus]);
     }
-} -->
+}
