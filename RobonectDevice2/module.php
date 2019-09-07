@@ -404,7 +404,7 @@ class RobonectDevice2 extends IPSModule
         //     return;
         // }
 
-        echo $this->translate('valid account-data');
+        echo $this->translate('valid account-data') . "\n" . $status['name'];
     }
 
     public function RequestAction($Ident, $Value)
