@@ -45,14 +45,13 @@ class RobonectConfig extends IPSModule
         $user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
 
-        $name = '';
-
         if ($ip != '' && $user != '' && $password != '') {
             
             $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
             
             $name = $this->GetMowerStatus();
-
+            $options[] = ['label' => $name, 'value' => $name];
+            
             $this->SendDebug(__FUNCTION__, $name, 0);
             // $getDataUrl = array(
 			// 	"status"  => "/json?cmd=status",
@@ -71,7 +70,7 @@ class RobonectConfig extends IPSModule
         }
 
         $formActions = [];
-        $formActions[] = ['type' => 'ValidationTextBox', 'name' => 'mower_name', 'caption' => 'Mower-Name', 'value' => $name];
+        $formActions[] = ['type' => 'Select', 'name' => 'mower_name', 'caption' => 'Mower-Name', 'options' => $options];
         $formActions[] = [
                             'type'    => 'Button',
                             'caption' => 'Import of mower',
