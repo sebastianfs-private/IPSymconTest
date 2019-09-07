@@ -46,6 +46,22 @@ class RobonectConfig extends IPSModule
         $password = $this->ReadPropertyString('password');
 
         if ($ip != '' || $user != '' || $password != '') {
+            $debug = True;
+
+			$getDataUrl = array(
+				"status"  => "/json?cmd=status",
+				"version" => "/json?cmd=version",
+				"error"   => "/json?cmd=error"
+			);
+				
+			$content = $this->url_get_contents($getDataUrl['status'], $debug);
+
+			$status = json_decode($content, true);
+
+			if($status['successful'] == true){
+			    $name = $status['name'];
+			    $options[] = ['label' => $name, 'value' => $name];
+			}
         }
 
         $formActions = [];
