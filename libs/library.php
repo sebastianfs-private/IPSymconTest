@@ -10,7 +10,7 @@ if (!defined('IS_UNAUTHORIZED')) {
 
 trait RobonectLibrary
 {
-	public function GetMowerInfo(string $type)
+	public function GetMowerData(string $type)
     {
 		$getDataUrl = array(
 			"status"  => "/json?cmd=status",

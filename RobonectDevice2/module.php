@@ -227,7 +227,7 @@ class RobonectDevice2 extends IPSModule
         $with_gps = $this->ReadPropertyBoolean('with_gps');
         $save_position = $this->ReadPropertyBoolean('save_position');
 
-        $status = $this->GetMowerInfo("status");
+        $status = $this->GetMowerData("status");
         if ($status == '') {
             $this->SetValue('Connected', false);
             return false;
@@ -391,7 +391,7 @@ class RobonectDevice2 extends IPSModule
         $user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
 
-        $status = $this->GetMowerStatus();
+        $status = $this->GetMowerData("status");
         if (!$status) {
             $this->SetStatus(IS_UNAUTHORIZED);
             echo $this->Translate('invalid account-data');
