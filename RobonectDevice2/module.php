@@ -241,9 +241,9 @@ class RobonectDevice2 extends IPSModule
         // $connected = $status['connected'];
         // $this->SetValue('Connected', $connected);
 
-        // $mowerStatus = $this->decode_mowerStatus($status['mowerStatus']);
-        // $this->SendDebug(__FUNCTION__, 'mowerStatus="' . $status['mowerStatus'] . '" => MowerStatus=' . $mowerStatus, 0);
-        // $this->SetValue('MowerStatus', $mowerStatus);
+        $mowerStatus = $this->decode_mowerStatus($status['status']['status']);
+        $this->SendDebug(__FUNCTION__, 'mowerStatus="' . $status['status']['status'] . '" => MowerStatus=' . $mowerStatus, 0);
+        $this->SetValue('MowerStatus', $mowerStatus);
 
         // $oldActivity = $this->GetValue('MowerActivity');
         // switch ($oldActivity) {
@@ -458,27 +458,37 @@ class RobonectDevice2 extends IPSModule
     private function decode_mowerStatus($val)
     {
         $val2txt = [
-                'ERROR'                       => 'error',
+            0  => "Status wird ermittelt",
+            1  => "Parkt",
+            2  => "Mäht",
+            3  => "Sucht",
+            4  => "Lädt",
+            5  => "Warten",
+            7  => "Fehlerstatus",
+            8  => "kein Schleifensignal",
+            16  => "Abgeschaltet",
+            17  => "Schläft"
+            // 'ERROR'                       => 'error',
 
-                'OK_CUTTING'                  => 'cutting',
-                'OK_CUTTING_NOT_AUTO'         => 'manual cutting',
-                'OK_CUTTING_TIMER_OVERRIDDEN' => 'manual cutting',
+            // 'OK_CUTTING'                  => 'cutting',
+            // 'OK_CUTTING_NOT_AUTO'         => 'manual cutting',
+            // 'OK_CUTTING_TIMER_OVERRIDDEN' => 'manual cutting',
 
-                'PARKED_TIMER'                => 'parked',
-                'PARKED_PARKED_SELECTED'      => 'manual parked',
+            // 'PARKED_TIMER'                => 'parked',
+            // 'PARKED_PARKED_SELECTED'      => 'manual parked',
 
-                'PAUSED'                      => 'paused',
+            // 'PAUSED'                      => 'paused',
 
-                'OFF_DISABLED'                => 'disabled',
-                'OFF_HATCH_OPEN'              => 'hatch open',
-                'OFF_HATCH_CLOSED'            => 'hatch closed',
-                'OFF_HATCH_CLOSED_DISABLED'   => 'hatch closed and disabled',
+            // 'OFF_DISABLED'                => 'disabled',
+            // 'OFF_HATCH_OPEN'              => 'hatch open',
+            // 'OFF_HATCH_CLOSED'            => 'hatch closed',
+            // 'OFF_HATCH_CLOSED_DISABLED'   => 'hatch closed and disabled',
 
-                'OK_SEARCHING'                => 'searching base',
-                'OK_LEAVING'                  => 'leaving base',
+            // 'OK_SEARCHING'                => 'searching base',
+            // 'OK_LEAVING'                  => 'leaving base',
 
-                'OK_CHARGING'                 => 'charging',
-            ];
+            // 'OK_CHARGING'                 => 'charging',
+        ];
 
         if (isset($val2txt[$val])) {
             $txt = $this->Translate($val2txt[$val]);
