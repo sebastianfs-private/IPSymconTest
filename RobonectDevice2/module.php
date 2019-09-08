@@ -240,6 +240,9 @@ class RobonectDevice2 extends IPSModule
         $batteryPercent = $status['status']['battery'];
         $this->SetValue('Battery', $batteryPercent);
 
+        $temperature = $status['health']['temperature'];
+        $this->SetValue('Temperature', $temperature);
+
         // $connected = $status['connected'];
         // $this->SetValue('Connected', $connected);
 
