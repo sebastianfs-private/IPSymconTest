@@ -113,6 +113,7 @@ class RobonectDevice2 extends IPSModule
         $this->CreateVarProfile('Robonect.Location', VARIABLETYPE_FLOAT, ' °', 0, 0, 0, 5, '');
         $this->CreateVarProfile('Robonect.Duration', VARIABLETYPE_INTEGER, ' min', 0, 0, 0, 0, 'Hourglass');
         $this->CreateVarProfile('Robonect.Temperature', VARIABLETYPE_INTEGER, ' °C', -20, 50, 0, 0, 'Temperature');
+        $this->CreateVarProfile('Robonect.Hours', VARIABLETYPE_INTEGER, ' h', 0, 0, 0, 0, 'Temperature');
     }
 
     public function Destroy() {
@@ -148,6 +149,7 @@ class RobonectDevice2 extends IPSModule
         $this->MaintainVariable('Connected', $this->Translate('Connected'), VARIABLETYPE_BOOLEAN, 'Robonect.Connection', $vpos++, true);
         $this->MaintainVariable('Battery', $this->Translate('Battery capacity'), VARIABLETYPE_INTEGER, 'Robonect.Battery', $vpos++, true);
         $this->MaintainVariable('Temperature', $this->Translate('Temperature'), VARIABLETYPE_INTEGER, 'Robonect.Temperature', $vpos++, true);
+        $this->MaintainVariable('OperationHours', $this->Translate('Operating hours'), VARIABLETYPE_INTEGER, 'Robonect.Hours', $vpos++, true);
         $this->MaintainVariable('OperationMode', $this->Translate('Operation mode'), VARIABLETYPE_STRING, '', $vpos++, true);
         $this->MaintainVariable('MowerStatus', $this->Translate('Mower status'), VARIABLETYPE_STRING, '', $vpos++, true);
         $this->MaintainVariable('MowerActivity', $this->Translate('Mower activity'), VARIABLETYPE_INTEGER, 'Robonect.Activity', $vpos++, true);
@@ -260,6 +262,9 @@ class RobonectDevice2 extends IPSModule
 
         $temperature = $status['health']['temperature'];
         $this->SetValue('Temperature', $temperature);
+
+        $hours = $status['status']['hours'];
+        $this->SetValue('OperationHours', $hours);
 
         // $connected = $status['connected'];
         // $this->SetValue('Connected', $connected);
