@@ -115,11 +115,9 @@ class RobonectDevice2 extends IPSModule
         $this->CreateVarProfile('Robonect.Temperature', VARIABLETYPE_FLOAT, ' °C', -20, 50, 0, 1, 'Temperature');
     }
 
-    public function Destroy()
-    {
-        parent::Destory();
-
-        IPS_DeleteVariableProfile("Robonect.Temperature");
+    public function Destroy() {
+        //Never delete this line!
+        parent::Destroy();
     }
 
     public function ApplyChanges()
