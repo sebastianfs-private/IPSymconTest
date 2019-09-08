@@ -62,19 +62,19 @@ trait RobonectLibrary
 
 		$this->SendDebug(__FUNCTION__, $getDataUrl[$mode], 0);
 			
-		// $content = $this->url_get_contents($getDataUrl[$mode]);
+		$content = $this->url_get_contents($getDataUrl[$mode]);
 		
-		// $status = json_decode($content, true);
-		// if($status['successful'] == true){
-		// 	$this->SendDebug(__FUNCTION__, 'Status: successful', 0);
+		$status = json_decode($content, true);
+		if($status['successful'] == true){
+			$this->SendDebug(__FUNCTION__, 'Status: successful', 0);
 			
-		// 	return $status;
-		// }
-		// else {
-		// 	$this->SendDebug(__FUNCTION__, 'Status: failed', 0);
+			return $status;
+		}
+		else {
+			$this->SendDebug(__FUNCTION__, 'Status: failed', 0);
 
-		// 	return false;
-		// }
+			return false;
+		}
     }
 
     public function url_get_contents(string $url)

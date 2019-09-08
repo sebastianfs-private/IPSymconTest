@@ -640,9 +640,6 @@ class RobonectDevice2 extends IPSModule
 
     private function MowerCmd($cmd)
     {
-        $ip = $this->ReadPropertyString('ip');
-        $user = $this->ReadPropertyString('user');
-        $password = $this->ReadPropertyString('password');
 
         $this->SendDebug(__FUNCTION__, $cmd, 0);
 
