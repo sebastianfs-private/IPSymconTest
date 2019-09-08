@@ -89,10 +89,10 @@ class RobonectDevice2 extends IPSModule
         // $this->CreateVarProfile('Robonect.Mode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
 
         $associations = [];
-        $associations[] = ['Wert' => AUTOMOWER_OPERATE_EOD, 'Name' => $this->Translate('auto'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_OPERATE_HOME, 'Name' => $this->Translate('manual'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_OPERATE_AUTO, 'Name' => $this->Translate('home'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_OPERATE_MANUAL, 'Name' => $this->Translate('demo'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_OPERATE_EOD, 'Name' => $this->Translate('End of day'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_OPERATE_HOME, 'Name' => $this->Translate('Home'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_OPERATE_AUTO, 'Name' => $this->Translate('Auto'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_OPERATE_MANUAL, 'Name' => $this->Translate('Manual'), 'Farbe' => -1];
         $this->CreateVarProfile('Robonect.Mode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
 
         $associations = [];
