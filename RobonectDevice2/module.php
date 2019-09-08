@@ -269,9 +269,7 @@ class RobonectDevice2 extends IPSModule
         $save_position = $this->ReadPropertyBoolean('save_position');
 
         $data = $this->GetMowerData("name");
-        if ($data['successful'] == "True"){
-            $this->SendDebug(__FUNCTION__, gettype($data['successful']), 0);
-
+        if ($data['successful'] == false){
             $this->SetValue('Connected', false);
             return false;
         }
@@ -285,7 +283,7 @@ class RobonectDevice2 extends IPSModule
         $this->SetValue('Name', $name);
 
         $data = $this->GetMowerData("status");
-        if ($data['successful'] == true) {
+        if ($data['successful'] == false) {
             $this->SetValue('Connected', false);
             return false;
         }
