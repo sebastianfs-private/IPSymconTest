@@ -161,7 +161,7 @@ class RobonectDevice2 extends IPSModule
         $save_position = $this->ReadPropertyBoolean('save_position');
 
         $vpos = 0;
-        $this->MaintainVariable('Name', $this->Translate('Name'), VARIABLETYPE_String, '', $vpos++, true);
+        $this->MaintainVariable('Name', $this->Translate('Name'), VARIABLETYPE_STRING, '', $vpos++, true);
         $this->MaintainVariable('Connected', $this->Translate('Connected'), VARIABLETYPE_BOOLEAN, 'Robonect.Connection', $vpos++, true);
         $this->MaintainVariable('Battery', $this->Translate('Battery capacity'), VARIABLETYPE_INTEGER, 'Robonect.Battery', $vpos++, true);
         $this->MaintainVariable('Temperature', $this->Translate('Temperature'), VARIABLETYPE_INTEGER, 'Robonect.Temperature', $vpos++, true);
