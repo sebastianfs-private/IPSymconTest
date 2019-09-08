@@ -161,6 +161,7 @@ class RobonectDevice2 extends IPSModule
         $save_position = $this->ReadPropertyBoolean('save_position');
 
         $vpos = 0;
+        $this->MaintainVariable('Name', $this->Translate('Name'), VARIABLETYPE_String, '', $vpos++, true);
         $this->MaintainVariable('Connected', $this->Translate('Connected'), VARIABLETYPE_BOOLEAN, 'Robonect.Connection', $vpos++, true);
         $this->MaintainVariable('Battery', $this->Translate('Battery capacity'), VARIABLETYPE_INTEGER, 'Robonect.Battery', $vpos++, true);
         $this->MaintainVariable('Temperature', $this->Translate('Temperature'), VARIABLETYPE_INTEGER, 'Robonect.Temperature', $vpos++, true);
@@ -188,6 +189,7 @@ class RobonectDevice2 extends IPSModule
             $this->SetStatus(IS_INACTIVE);
             return;
         }
+
 
         if ($user != '' && $password != '' && $ip != '') {
             $this->SetUpdateInterval();
@@ -265,33 +267,42 @@ class RobonectDevice2 extends IPSModule
         $with_gps = $this->ReadPropertyBoolean('with_gps');
         $save_position = $this->ReadPropertyBoolean('save_position');
 
-        $status = $this->GetMowerData("status");
-        if ($status == '') {
+        $data = $this->GetMowerData("name");
+        if ($data == '') {
             $this->SetValue('Connected', false);
             return false;
         }
 
         $this->SetValue('Connected', true);
-        
-        $this->SendDebug(__FUNCTION__, 'status=' . print_r($status['successful'], true), 0);
 
-        $batteryPercent = $status['status']['battery'];
+        $name = $data['name'];
+        $this->SetValue('Name', $name);
+
+        $data = $this->GetMowerData("status");
+        if ($data == '') {
+            $this->SetValue('Connected', false);
+            return false;
+        }
+        
+        $this->SendDebug(__FUNCTION__, 'status=' . print_r($data['successful'], true), 0);
+
+        $batteryPercent = $data['status']['battery'];
         $this->SetValue('Battery', $batteryPercent);
 
-        $temperature = $status['health']['temperature'];
+        $temperature = $data['health']['temperature'];
         $this->SetValue('Temperature', $temperature);
 
-        $hours = $status['status']['hours'];
+        $hours = $data['status']['hours'];
         $this->SetValue('OperationHours', $hours);
 
-        $mode = $status['timer']['status'];
+        $mode = $data['timer']['status'];
         $this->SetValue('TimerMode', $mode);
 
         // $connected = $status['connected'];
         // $this->SetValue('Connected', $connected);
 
-        $mowerStatus = $this->decode_mowerStatus($status['status']['status']);
-        $this->SendDebug(__FUNCTION__, 'mowerStatus="' . $status['status']['status'] . '" => MowerStatus=' . $mowerStatus, 0);
+        $mowerStatus = $this->decode_mowerStatus($data['status']['status']);
+        $this->SendDebug(__FUNCTION__, 'mowerStatus="' . $data['status']['status'] . '" => MowerStatus=' . $mowerStatus, 0);
         $this->SetValue('MowerStatus', $mowerStatus);
 
         // $oldActivity = $this->GetValue('MowerActivity');
