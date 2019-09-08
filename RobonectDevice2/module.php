@@ -118,6 +118,8 @@ class RobonectDevice2 extends IPSModule
     public function Destroy() {
         //Never delete this line!
         parent::Destroy();
+
+        IPS_DeleteVariableProfile("Robonect.Temperature");
     }
 
     public function ApplyChanges()
