@@ -46,6 +46,32 @@ trait RobonectLibrary
 
 			return false;
 		}
+	}
+	
+	public function SetMowerMode(string $type)
+    {
+		$getDataUrl = array(
+			"home"  => "/json?cmd=mode&mode=home",
+			"eod"  => "/json?cmd=mode&mode=eod",
+			"man"  => "/json?cmd=mode&mode=man",
+			"auto"  => "/json?cmd=mode&mode=auto",
+			"job"  => "/json?cmd=mode&mode=job"
+		);
+			
+		$content = $this->url_get_contents($getDataUrl[$type]);
+		
+		$status = json_decode($content, true);
+		if($status['successful'] == true){
+			$this->SendDebug(__FUNCTION__, 'Status: successful', 0);
+			$this->SendDebug(__FUNCTION__, $status['name'], 0);
+			
+			return $status;
+		}
+		else {
+			$this->SendDebug(__FUNCTION__, 'Status: failed', 0);
+
+			return false;
+		}
     }
 
     public function url_get_contents(string $url)

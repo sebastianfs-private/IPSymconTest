@@ -625,12 +625,12 @@ class RobonectDevice2 extends IPSModule
 
     public function ParkMower()
     {
-        return $this->MowerCmd('PARK');
+        return $this->MowerCmd('home');
     }
 
     public function StartMower()
     {
-        return $this->MowerCmd('START');
+        return $this->MowerCmd('auto');
     }
 
     public function StopMower()
@@ -641,22 +641,14 @@ class RobonectDevice2 extends IPSModule
     private function MowerCmd($cmd)
     {
         $ip = $this->ReadPropertyString('ip');
+        $user = $this->ReadPropertyString('user');
+        $password = $this->ReadPropertyString('password');
 
-        $postdata = [
-                'action' => $cmd
-            ];
-
-        $cdata = $this->do_ApiCall($this->url_track . 'mowers/' . $ip . '/control', $postdata);
-        if ($cdata == '') {
+        $data = $this->SetMowerMode($cmd);
+        if ($data['successful'] == false){
+            $this->SetValue('Connected', false);
             return false;
         }
-        $jdata = json_decode($cdata, true);
-        $status = $jdata['status'];
-        if ($status == 'OK') {
-            return true;
-        }
-        $errorCode = $jdata['errorCode'];
-        $this->SendDebug(__FUNCTION__, 'command failed, status=' . $status . ', errorCode=' . $errorCode, 0);
     }
 
     protected function SetBuffer($name, $data)
