@@ -31,6 +31,8 @@ trait RobonectLibrary
 			"version" => "/json?cmd=version",
 			"error"   => "/json?cmd=error"
 		);
+
+		$this->SendDebug(__FUNCTION__, $getDataUrl[$type], 0);
 			
 		$content = $this->url_get_contents($getDataUrl[$type]);
 		
