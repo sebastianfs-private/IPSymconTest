@@ -644,6 +644,8 @@ class RobonectDevice2 extends IPSModule
         $user = $this->ReadPropertyString('user');
         $password = $this->ReadPropertyString('password');
 
+        $this->SendDebug(__FUNCTION__, $cmd, 0);
+
         $data = $this->SetMowerMode($cmd);
         if ($data['successful'] == false){
             $this->SetValue('Connected', false);
