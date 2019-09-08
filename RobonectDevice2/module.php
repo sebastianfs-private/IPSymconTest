@@ -118,7 +118,14 @@ class RobonectDevice2 extends IPSModule
     public function Destroy() {
         //Never delete this line!
         parent::Destroy();
-
+        
+        IPS_DeleteVariableProfile("Robonect.Action");
+        IPS_DeleteVariableProfile("Robonect.Activity");
+        IPS_DeleteVariableProfile("Robonect.Error");
+        IPS_DeleteVariableProfile("Robonect.Connection");
+        IPS_DeleteVariableProfile("Robonect.Battery");
+        IPS_DeleteVariableProfile("Robonect.Location");
+        IPS_DeleteVariableProfile("Robonect.Duration");
         IPS_DeleteVariableProfile("Robonect.Temperature");
     }
 
