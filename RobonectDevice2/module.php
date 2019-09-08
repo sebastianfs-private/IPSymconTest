@@ -171,7 +171,7 @@ class RobonectDevice2 extends IPSModule
     public function Destroy() {
         //Never delete this line!
         parent::Destroy();
-        
+
         $instances = IPS_GetInstanceListByModuleID('{51D61D4E-17D3-49C0-A07F-3E0BE775FDA5}');
         if (!$instances) {
             $this->SendDebug(__FUNCTION__, 'trigger delete variable profiles', 0);
@@ -186,6 +186,7 @@ class RobonectDevice2 extends IPSModule
             IPS_DeleteVariableProfile("Robonect.Temperature");
             IPS_DeleteVariableProfile("Robonect.Hours");
             IPS_DeleteVariableProfile("Robonect.Timer");
+            IPS_DeleteVariableProfile("Robonect.Blade");
         }
     }
 
