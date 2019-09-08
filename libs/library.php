@@ -50,6 +50,8 @@ trait RobonectLibrary
 	
 	public function SetMowerMode(string $type)
     {
+		$this->SendDebug(__FUNCTION__, $type, 0);
+
 		$getDataUrl = array(
 			"home"  => "/json?cmd=mode&mode=home",
 			"eod"  => "/json?cmd=mode&mode=eod",
