@@ -10,7 +10,7 @@ if (!defined('IS_UNAUTHORIZED')) {
 
 trait RobonectLibrary
 {
-	public function GetMowerStatus()
+	public function GetMowerInfo(string $type)
     {
 		$getDataUrl = array(
 			"status"  => "/json?cmd=status",
@@ -18,7 +18,7 @@ trait RobonectLibrary
 			"error"   => "/json?cmd=error"
 		);
 			
-		$content = $this->url_get_contents($getDataUrl['status']);
+		$content = $this->url_get_contents($getDataUrl[$type]);
 		
 		$status = json_decode($content, true);
 		if($status['successful'] == true){
