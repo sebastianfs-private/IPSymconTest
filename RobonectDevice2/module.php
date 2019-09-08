@@ -112,7 +112,14 @@ class RobonectDevice2 extends IPSModule
         $this->CreateVarProfile('Robonect.Battery', VARIABLETYPE_INTEGER, ' %', 1, 0, 100, 1, 'Battery');
         $this->CreateVarProfile('Robonect.Location', VARIABLETYPE_FLOAT, ' °', 0, 0, 0, 5, '');
         $this->CreateVarProfile('Robonect.Duration', VARIABLETYPE_INTEGER, ' min', 0, 0, 0, 0, 'Hourglass');
-        $this->CreateVarProfile('Robonect.Temperature', VARIABLETYPE_FLOAT, ' °C', -1, 1, 2, 3, 'Temperature');
+        $this->CreateVarProfile('Robonect.Temperature', VARIABLETYPE_FLOAT, ' °C', -20, 50, 0, 1, 'Temperature');
+    }
+
+    public function Destroy()
+    {
+        parent::Destory();
+
+        $this->DeleteVarProfile("Robonect.Temperature");
     }
 
     public function ApplyChanges()
