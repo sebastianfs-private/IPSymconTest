@@ -16,10 +16,9 @@ if (!defined('AUTOMOWER_ACTIVITY_UNKNOWN')) {
     define('AUTOMOWER_ACTIVITY_SLEEPING', 17);
 }
 
-if (!defined('AUTOMOWER_ACTION_PARK')) {
-    define('AUTOMOWER_ACTION_PARK', 0);
-    define('AUTOMOWER_ACTION_START', 1);
-    define('AUTOMOWER_ACTION_STOP', 2);
+if (!defined('AUTOMOWER_STATUS_STARTED')) {
+    define('AUTOMOWER_STATUS_STARTED', false);
+    define('AUTOMOWER_STATUS_STOPPED', true);
 }
 
 if (!defined('AUTOMOWER_CONTROL_START')) {
@@ -72,24 +71,11 @@ class RobonectDevice2 extends IPSModule
         $this->RegisterTimer('UpdateStatus', 0, 'RobonectDevice_UpdateStatus(' . $this->InstanceID . ');');
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
 
-        // $associations = [];
-        // $associations[] = ['Wert' => AUTOMOWER_ACTION_PARK, 'Name' => $this->Translate('park'), 'Farbe' => -1];
-        // $associations[] = ['Wert' => AUTOMOWER_ACTION_START, 'Name' => $this->Translate('start'), 'Farbe' => -1];
-        // $associations[] = ['Wert' => AUTOMOWER_ACTION_STOP, 'Name' => $this->Translate('stop'), 'Farbe' => -1];
-        // $this->CreateVarProfile('Robonect.Action', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
-
         $associations = [];
-        $associations[] = ['Wert' => AUTOMOWER_ACTION_START, 'Name' => $this->Translate('start'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_ACTION_STOP, 'Name' => $this->Translate('stop'), 'Farbe' => -1];
-        $this->CreateVarProfile('Robonect.Action', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
-
-        // $associations = [];
-        // $associations[] = ['Wert' => AUTOMOWER_MODE_AUTO, 'Name' => $this->Translate('auto'), 'Farbe' => -1];
-        // $associations[] = ['Wert' => AUTOMOWER_MODE_MANUAL, 'Name' => $this->Translate('manual'), 'Farbe' => -1];
-        // $associations[] = ['Wert' => AUTOMOWER_MODE_HOME, 'Name' => $this->Translate('home'), 'Farbe' => -1];
-        // $associations[] = ['Wert' => AUTOMOWER_MODE_DEMO, 'Name' => $this->Translate('demo'), 'Farbe' => -1];
-        // $this->CreateVarProfile('Robonect.Mode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
-
+        $associations[] = ['Wert' => AUTOMOWER_STATUS_STARTED, 'Name' => $this->Translate('started'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_STATUS_STOPPED, 'Name' => $this->Translate('stopped'), 'Farbe' => -1];
+        $this->CreateVarProfile('Robonect.Status', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
+        
         $associations = [];
         $associations[] = ['Wert' => AUTOMOWER_OPERATE_EOD, 'Name' => $this->Translate('End of day'), 'Farbe' => -1];
         $associations[] = ['Wert' => AUTOMOWER_OPERATE_HOME, 'Name' => $this->Translate('Home'), 'Farbe' => -1];
@@ -215,9 +201,8 @@ class RobonectDevice2 extends IPSModule
         $this->MaintainVariable('OperationHours', $this->Translate('Operating hours'), VARIABLETYPE_INTEGER, 'Robonect.Hours', $vpos++, true);
         $this->MaintainVariable('OperationMode', $this->Translate('Operation mode'), VARIABLETYPE_INTEGER, 'Robonect.Mode', $vpos++, true);
         $this->MaintainVariable('TimerMode', $this->Translate('Timer mode'), VARIABLETYPE_INTEGER, 'Robonect.Timer', $vpos++, true);
-        $this->MaintainVariable('MowerStatus', $this->Translate('Mower status'), VARIABLETYPE_STRING, '', $vpos++, true);
+        $this->MaintainVariable('MowerStatus', $this->Translate('Mower status'), VARIABLETYPE_STRING, 'Robonect.Status', $vpos++, true);
         $this->MaintainVariable('MowerActivity', $this->Translate('Mower activity'), VARIABLETYPE_INTEGER, 'Robonect.Activity', $vpos++, true);
-        $this->MaintainVariable('MowerAction', $this->Translate('Mower action'), VARIABLETYPE_INTEGER, 'Robonect.Action', $vpos++, true);
         $this->MaintainVariable('NextStart', $this->Translate('Next start'), VARIABLETYPE_INTEGER, '~UnixTimestamp', $vpos++, true);
         $this->MaintainVariable('DailyReference', $this->Translate('Day of cumulation'), VARIABLETYPE_INTEGER, '~UnixTimestampDate', $vpos++, true);
         $this->MaintainVariable('DailyWorking', $this->Translate('Working time (day)'), VARIABLETYPE_INTEGER, 'Robonect.Duration', $vpos++, true);
@@ -229,7 +214,7 @@ class RobonectDevice2 extends IPSModule
         $this->MaintainVariable('Position', $this->Translate('Position'), VARIABLETYPE_STRING, '', $vpos++, $save_position);
 
         $this->MaintainAction('OperationMode', true);
-        $this->MaintainAction('MowerAction', true);
+        $this->MaintainAction('MowerStatus', true);
 
         $module_disable = $this->ReadPropertyBoolean('module_disable');
         if ($module_disable) {
