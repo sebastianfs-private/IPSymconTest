@@ -161,6 +161,7 @@ class RobonectDevice2 extends IPSModule
         $save_position = $this->ReadPropertyBoolean('save_position');
 
         $vpos = 0;
+        $this->MaintainVariable('Id', $this->Translate('Id'), VARIABLETYPE_INTEGER, '', $vpos++, true);
         $this->MaintainVariable('Name', $this->Translate('Name'), VARIABLETYPE_STRING, '', $vpos++, true);
         $this->MaintainVariable('Connected', $this->Translate('Connected'), VARIABLETYPE_BOOLEAN, 'Robonect.Connection', $vpos++, true);
         $this->MaintainVariable('Battery', $this->Translate('Battery capacity'), VARIABLETYPE_INTEGER, 'Robonect.Battery', $vpos++, true);
@@ -268,18 +269,21 @@ class RobonectDevice2 extends IPSModule
         $save_position = $this->ReadPropertyBoolean('save_position');
 
         $data = $this->GetMowerData("name");
-        if ($data == '') {
+        if ($data['successful'] == true) {
             $this->SetValue('Connected', false);
             return false;
         }
 
         $this->SetValue('Connected', true);
 
+        $id = $data['id'];
+        $this->SetValue('Id', $id);
+
         $name = $data['name'];
         $this->SetValue('Name', $name);
 
         $data = $this->GetMowerData("status");
-        if ($data == '') {
+        if ($data['successful'] == true) {
             $this->SetValue('Connected', false);
             return false;
         }
