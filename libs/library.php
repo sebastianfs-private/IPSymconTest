@@ -13,6 +13,20 @@ trait RobonectLibrary
 	public function GetMowerData(string $type)
     {
 		$getDataUrl = array(
+			"status"  => "/json?cmd=battery",
+			"ext"  => "/json?cmd=ext",
+			"hour"  => "/json?cmd=hour",
+			"motor"  => "/json?cmd=motor",
+			"portal"  => "/json?cmd=portal",
+			"push"  => "/json?cmd=push",
+			"timer"  => "/json?cmd=timer",
+			"wlan"  => "/json?cmd=wlan",
+			"name"  => "/json?cmd=name",
+			"weather"  => "/json?cmd=weather",
+			"wire"  => "/json?cmd=wire",
+			"gps"  => "/json?cmd=gps",
+			"door"  => "/json?cmd=door",
+			"remote"  => "/json?cmd=remote",
 			"status"  => "/json?cmd=status",
 			"version" => "/json?cmd=version",
 			"error"   => "/json?cmd=error"

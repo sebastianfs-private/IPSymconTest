@@ -235,8 +235,8 @@ class RobonectDevice2 extends IPSModule
         
         $this->SendDebug(__FUNCTION__, 'status=' . print_r($status['successful'], true), 0);
 
-        // $batteryPercent = $status['batteryPercent'];
-        // $this->SetValue('Battery', $batteryPercent);
+        $batteryPercent = $status['status']['battery'];
+        $this->SetValue('Battery', $batteryPercent);
 
         // $connected = $status['connected'];
         // $this->SetValue('Connected', $connected);
