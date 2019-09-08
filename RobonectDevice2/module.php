@@ -130,12 +130,12 @@ class RobonectDevice2 extends IPSModule
         $associations[] = ['Wert' => 46, 'Name' => $this->Translate('limited cutting height range'), 'Farbe' => 0xFF0000];
         $associations[] = ['Wert' => 47, 'Name' => $this->Translate('Problem drive cutting height'), 'Farbe' => 0xFF0000];
         $this->CreateVarProfile('Robonect.Error', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
-
+        
         $associations = [];
         $associations[] = ['Wert' => false, 'Name' => $this->Translate('Disconnected'), 'Farbe' => 0xEE0000];
         $associations[] = ['Wert' => true, 'Name' => $this->Translate('Connected'), 'Farbe' => -1];
         $this->CreateVarProfile('Robonect.Connection', VARIABLETYPE_BOOLEAN, '', 0, 0, 0, 1, 'Alarm', $associations);
-
+        
         $this->CreateVarProfile('Robonect.Battery', VARIABLETYPE_INTEGER, ' %', 1, 0, 100, 1, 'Battery');
         $this->CreateVarProfile('Robonect.Blade', VARIABLETYPE_INTEGER, ' %', 1, 0, 100, 1, 'EnergyProduction');
         $this->CreateVarProfile('Robonect.Location', VARIABLETYPE_FLOAT, ' °', 0, 0, 0, 5, '');

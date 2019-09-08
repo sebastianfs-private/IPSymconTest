@@ -48,9 +48,9 @@ trait RobonectLibrary
 		}
 	}
 	
-	public function SetMowerMode(string $type)
+	public function SetMowerMode(string $mode)
     {
-		$this->SendDebug(__FUNCTION__, $type, 0);
+		$this->SendDebug(__FUNCTION__, $mode, 0);
 
 		$getDataUrl = array(
 			"home"  => "/json?cmd=mode&mode=home",
@@ -59,20 +59,22 @@ trait RobonectLibrary
 			"auto"  => "/json?cmd=mode&mode=auto",
 			"job"  => "/json?cmd=mode&mode=job"
 		);
-			
-		$content = $this->url_get_contents($getDataUrl[$type]);
-		
-		$status = json_decode($content, true);
-		if($status['successful'] == true){
-			$this->SendDebug(__FUNCTION__, 'Status: successful', 0);
-			
-			return $status;
-		}
-		else {
-			$this->SendDebug(__FUNCTION__, 'Status: failed', 0);
 
-			return false;
-		}
+		$this->SendDebug(__FUNCTION__, $getDataUrl[$mode], 0);
+			
+		// $content = $this->url_get_contents($getDataUrl[$mode]);
+		
+		// $status = json_decode($content, true);
+		// if($status['successful'] == true){
+		// 	$this->SendDebug(__FUNCTION__, 'Status: successful', 0);
+			
+		// 	return $status;
+		// }
+		// else {
+		// 	$this->SendDebug(__FUNCTION__, 'Status: failed', 0);
+
+		// 	return false;
+		// }
     }
 
     public function url_get_contents(string $url)
