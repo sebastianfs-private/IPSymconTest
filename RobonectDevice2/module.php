@@ -31,9 +31,9 @@ class RobonectDevice2 extends IPSModule
 
         $this->RegisterPropertyBoolean('module_disable', false);
         
-        $this->RegisterPropertyString('ip', '');
-        $this->RegisterPropertyString('user', '');
-        $this->RegisterPropertyString('password', '');
+        $this->RegisterPropertyString('ip', '192.168.188.184');
+        $this->RegisterPropertyString('user', 'sebastian');
+        $this->RegisterPropertyString('password', '31827JohanN');
         $this->RegisterPropertyString('model', '');
 
         $this->RegisterPropertyBoolean('with_gps', true);
