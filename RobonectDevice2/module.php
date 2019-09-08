@@ -309,7 +309,7 @@ class RobonectDevice2 extends IPSModule
         $with_gps = $this->ReadPropertyBoolean('with_gps');
         $save_position = $this->ReadPropertyBoolean('save_position');
 
-        $data = $this->GetMowerData("name");
+        $data = $this->GetMowerData("status");
         if ($data['successful'] == false){
             $this->SetValue('Connected', false);
             return false;
