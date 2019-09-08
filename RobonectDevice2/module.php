@@ -4,14 +4,16 @@ require_once __DIR__ . '/../libs/common.php';  // globale Funktionen
 require_once __DIR__ . '/../libs/library.php';  // modul-bezogene Funktionen
 
 // normalized MowerStatus
-if (!defined('AUTOMOWER_ACTIVITY_ERROR')) {
-    define('AUTOMOWER_ACTIVITY_ERROR', -1);
-    define('AUTOMOWER_ACTIVITY_DISABLED', 0);
-    define('AUTOMOWER_ACTIVITY_PARKED', 1);
-    define('AUTOMOWER_ACTIVITY_CHARGING', 2);
-    define('AUTOMOWER_ACTIVITY_PAUSED', 3);
-    define('AUTOMOWER_ACTIVITY_MOVING', 4);
-    define('AUTOMOWER_ACTIVITY_CUTTING', 5);
+if (!defined('AUTOMOWER_ACTIVITY_UNKNOWN')) {
+    define('AUTOMOWER_ACTIVITY_UNKNOWN', 1);
+    define('AUTOMOWER_ACTIVITY_PARKED', 2);
+    define('AUTOMOWER_ACTIVITY_CUTTING', 3);
+    define('AUTOMOWER_ACTIVITY_CHARGING', 4);
+    define('AUTOMOWER_ACTIVITY_WAITING', 5);
+    define('AUTOMOWER_ACTIVITY_FAILED', 5);
+    define('AUTOMOWER_ACTIVITY_NO_SIGNAL', 8);
+    define('AUTOMOWER_ACTIVITY_DISABLED', 16);
+    define('AUTOMOWER_ACTIVITY_SLEEPING', 17);
 }
 
 if (!defined('AUTOMOWER_ACTION_PARK')) {
@@ -102,13 +104,15 @@ class RobonectDevice2 extends IPSModule
         $this->CreateVarProfile('Robonect.Timer', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
 
         $associations = [];
-        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_ERROR, 'Name' => $this->Translate('error'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_DISABLED, 'Name' => $this->Translate('disabled'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_UNKNOWN, 'Name' => $this->Translate('unknown'), 'Farbe' => -1];
         $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_PARKED, 'Name' => $this->Translate('parked'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_CHARGING, 'Name' => $this->Translate('charging'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_PAUSED, 'Name' => $this->Translate('paused'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_MOVING, 'Name' => $this->Translate('moving'), 'Farbe' => -1];
         $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_CUTTING, 'Name' => $this->Translate('cutting'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_CHARGING, 'Name' => $this->Translate('charging'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_WAITING, 'Name' => $this->Translate('waiting'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_FAILED, 'Name' => $this->Translate('failed'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_NO_SIGNAL, 'Name' => $this->Translate('no signal'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_DISABLED, 'Name' => $this->Translate('disabled'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_ACTIVITY_SLEEPING, 'Name' => $this->Translate('sleeping'), 'Farbe' => -1];
         $this->CreateVarProfile('Robonect.Activity', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
 
         $associations = [];
@@ -351,12 +355,13 @@ class RobonectDevice2 extends IPSModule
         $tmode = $data['timer']['status'];
         $this->SetValue('TimerMode', $tmode);
 
-        // $connected = $status['connected'];
-        // $this->SetValue('Connected', $connected);
-
-        $mowerStatus = $this->decode_mowerStatus($data['status']['status']);
-        $this->SendDebug(__FUNCTION__, 'mowerStatus="' . $data['status']['status'] . '" => MowerStatus=' . $mowerStatus, 0);
+        $mowerStatus = $this->decode_mowerStatus($data['status']['stopped']);
+        $this->SendDebug(__FUNCTION__, 'mowerStatus="' . $data['status']['stopped'], 0);
         $this->SetValue('MowerStatus', $mowerStatus);
+
+        $mowerActivity = $this->decode_mowerStatus($data['status']['status']);
+        $this->SendDebug(__FUNCTION__, 'mowerActivity="' . $data['status']['status'] . '" => MowerActivity=' . $mowerActivity, 0);
+        $this->SetValue('MowerActivity', $mowerActivity);
 
         // $oldActivity = $this->GetValue('MowerActivity');
         // switch ($oldActivity) {
