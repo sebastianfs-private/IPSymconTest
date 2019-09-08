@@ -112,7 +112,7 @@ class RobonectDevice2 extends IPSModule
         $this->CreateVarProfile('Robonect.Battery', VARIABLETYPE_INTEGER, ' %', 1, 0, 100, 1, 'Battery');
         $this->CreateVarProfile('Robonect.Location', VARIABLETYPE_FLOAT, ' °', 0, 0, 0, 5, '');
         $this->CreateVarProfile('Robonect.Duration', VARIABLETYPE_INTEGER, ' min', 0, 0, 0, 0, 'Hourglass');
-        $this->CreateVarProfile('Robonect.Temperature', VARIABLETYPE_FLOAT, ' °C', -25, 50, 0, 1, 'Temperature');
+        $this->CreateVarProfile('Robonect.Temperature', VARIABLETYPE_INTEGER, ' °C', -20, 50, 0, 0, 'Temperature');
     }
 
     public function Destroy() {
@@ -143,7 +143,7 @@ class RobonectDevice2 extends IPSModule
         $vpos = 0;
         $this->MaintainVariable('Connected', $this->Translate('Connected'), VARIABLETYPE_BOOLEAN, 'Robonect.Connection', $vpos++, true);
         $this->MaintainVariable('Battery', $this->Translate('Battery capacity'), VARIABLETYPE_INTEGER, 'Robonect.Battery', $vpos++, true);
-        $this->MaintainVariable('Temperature', $this->Translate('Temperature'), VARIABLETYPE_FLOAT, 'Robonect.Temperature', $vpos++, true);
+        $this->MaintainVariable('Temperature', $this->Translate('Temperature'), VARIABLETYPE_INTEGER, 'Robonect.Temperature', $vpos++, true);
         $this->MaintainVariable('OperationMode', $this->Translate('Operation mode'), VARIABLETYPE_STRING, '', $vpos++, true);
         $this->MaintainVariable('MowerStatus', $this->Translate('Mower status'), VARIABLETYPE_STRING, '', $vpos++, true);
         $this->MaintainVariable('MowerActivity', $this->Translate('Mower activity'), VARIABLETYPE_INTEGER, 'Robonect.Activity', $vpos++, true);
