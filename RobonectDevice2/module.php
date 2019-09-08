@@ -166,7 +166,7 @@ class RobonectDevice2 extends IPSModule
         $this->MaintainVariable('Temperature', $this->Translate('Temperature'), VARIABLETYPE_INTEGER, 'Robonect.Temperature', $vpos++, true);
         $this->MaintainVariable('OperationHours', $this->Translate('Operating hours'), VARIABLETYPE_INTEGER, 'Robonect.Hours', $vpos++, true);
         $this->MaintainVariable('OperationMode', $this->Translate('Operation mode'), VARIABLETYPE_STRING, '', $vpos++, true);
-        $this->MaintainVariable('TimerMode', $this->Translate('Timer mode'), VARIABLETYPE_STRING, '', $vpos++, true);
+        $this->MaintainVariable('TimerMode', $this->Translate('Timer mode'), VARIABLETYPE_INTEGER, 'Robonect.Timer', $vpos++, true);
         $this->MaintainVariable('MowerStatus', $this->Translate('Mower status'), VARIABLETYPE_STRING, '', $vpos++, true);
         $this->MaintainVariable('MowerActivity', $this->Translate('Mower activity'), VARIABLETYPE_INTEGER, 'Robonect.Activity', $vpos++, true);
         $this->MaintainVariable('MowerAction', $this->Translate('Mower action'), VARIABLETYPE_INTEGER, 'Robonect.Action', $vpos++, true);
