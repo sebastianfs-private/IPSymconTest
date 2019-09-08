@@ -57,7 +57,9 @@ trait RobonectLibrary
 			"eod"  => "/json?cmd=mode&mode=eod",
 			"man"  => "/json?cmd=mode&mode=man",
 			"auto"  => "/json?cmd=mode&mode=auto",
-			"job"  => "/json?cmd=mode&mode=job"
+			"job"  => "/json?cmd=mode&mode=job",
+			"start"  => "/json?cmd=start",
+			"stop"  => "/json?cmd=stop"
 		);
 
 		$this->SendDebug(__FUNCTION__, $getDataUrl[$mode], 0);

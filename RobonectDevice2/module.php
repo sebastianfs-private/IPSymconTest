@@ -20,6 +20,18 @@ if (!defined('AUTOMOWER_ACTION_PARK')) {
     define('AUTOMOWER_ACTION_STOP', 2);
 }
 
+if (!defined('AUTOMOWER_CONTROL_START')) {
+    define('AUTOMOWER_CONTROL_START', 0);
+    define('AUTOMOWER_CONTROL_STOP', 1);
+}
+
+if (!defined('AUTOMOWER_OPERATE_EOD')) {
+    define('AUTOMOWER_OPERATE_EOD', 0);
+    define('AUTOMOWER_OPERATE_HOME', 1);
+    define('AUTOMOWER_OPERATE_AUTO', 2);
+    define('AUTOMOWER_OPERATE_MANUAL', 3);
+}
+
 if (!defined('AUTOMOWER_MODE_AUTO')) {
     define('AUTOMOWER_MODE_AUTO', 0);
     define('AUTOMOWER_MODE_MANUAL', 1);
@@ -58,17 +70,29 @@ class RobonectDevice2 extends IPSModule
         $this->RegisterTimer('UpdateStatus', 0, 'RobonectDevice_UpdateStatus(' . $this->InstanceID . ');');
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
 
+        // $associations = [];
+        // $associations[] = ['Wert' => AUTOMOWER_ACTION_PARK, 'Name' => $this->Translate('park'), 'Farbe' => -1];
+        // $associations[] = ['Wert' => AUTOMOWER_ACTION_START, 'Name' => $this->Translate('start'), 'Farbe' => -1];
+        // $associations[] = ['Wert' => AUTOMOWER_ACTION_STOP, 'Name' => $this->Translate('stop'), 'Farbe' => -1];
+        // $this->CreateVarProfile('Robonect.Action', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
+
         $associations = [];
-        $associations[] = ['Wert' => AUTOMOWER_ACTION_PARK, 'Name' => $this->Translate('park'), 'Farbe' => -1];
         $associations[] = ['Wert' => AUTOMOWER_ACTION_START, 'Name' => $this->Translate('start'), 'Farbe' => -1];
         $associations[] = ['Wert' => AUTOMOWER_ACTION_STOP, 'Name' => $this->Translate('stop'), 'Farbe' => -1];
         $this->CreateVarProfile('Robonect.Action', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
 
+        // $associations = [];
+        // $associations[] = ['Wert' => AUTOMOWER_MODE_AUTO, 'Name' => $this->Translate('auto'), 'Farbe' => -1];
+        // $associations[] = ['Wert' => AUTOMOWER_MODE_MANUAL, 'Name' => $this->Translate('manual'), 'Farbe' => -1];
+        // $associations[] = ['Wert' => AUTOMOWER_MODE_HOME, 'Name' => $this->Translate('home'), 'Farbe' => -1];
+        // $associations[] = ['Wert' => AUTOMOWER_MODE_DEMO, 'Name' => $this->Translate('demo'), 'Farbe' => -1];
+        // $this->CreateVarProfile('Robonect.Mode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
+
         $associations = [];
-        $associations[] = ['Wert' => AUTOMOWER_MODE_AUTO, 'Name' => $this->Translate('auto'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_MODE_MANUAL, 'Name' => $this->Translate('manual'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_MODE_HOME, 'Name' => $this->Translate('home'), 'Farbe' => -1];
-        $associations[] = ['Wert' => AUTOMOWER_MODE_DEMO, 'Name' => $this->Translate('demo'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_OPERATE_EOD, 'Name' => $this->Translate('auto'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_OPERATE_HOME, 'Name' => $this->Translate('manual'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_OPERATE_AUTO, 'Name' => $this->Translate('home'), 'Farbe' => -1];
+        $associations[] = ['Wert' => AUTOMOWER_OPERATE_MANUAL, 'Name' => $this->Translate('demo'), 'Farbe' => -1];
         $this->CreateVarProfile('Robonect.Mode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 0, '', $associations);
 
         $associations = [];
@@ -198,6 +222,7 @@ class RobonectDevice2 extends IPSModule
         $this->MaintainVariable('LastStatus', $this->Translate('Last status'), VARIABLETYPE_INTEGER, '~UnixTimestamp', $vpos++, true);
         $this->MaintainVariable('Position', $this->Translate('Position'), VARIABLETYPE_STRING, '', $vpos++, $save_position);
 
+        $this->MaintainAction('OperationMode', true);
         $this->MaintainAction('MowerAction', true);
 
         $module_disable = $this->ReadPropertyBoolean('module_disable');
@@ -499,14 +524,31 @@ class RobonectDevice2 extends IPSModule
             case 'MowerAction':
                 $this->SendDebug(__FUNCTION__, "$Ident=$Value", 0);
                 switch ($Value) {
-                    case AUTOMOWER_ACTION_PARK:
-                        $this->ParkMower();
-                        break;
-                    case AUTOMOWER_ACTION_START:
+                    case AUTOMOWER_CONTROL_START:
                         $this->StartMower();
                         break;
-                    case AUTOMOWER_ACTION_STOP:
+                    case AUTOMOWER_CONTROL_STOP:
                         $this->StopMower();
+                        break;
+                    default:
+                        $this->SendDebug(__FUNCTION__, "invalid value \"$Value\" for $Ident", 0);
+                        break;
+                }
+                break;
+            case 'OperationMode':
+                $this->SendDebug(__FUNCTION__, "$Ident=$Value", 0);
+                switch ($Value) {
+                    case AUTOMOWER_OPERATE_EOD:
+                        $this->ModeMower("eod");
+                        break;
+                    case AUTOMOWER_OPERATE_HOME:
+                        $this->ModeMower("home");
+                        break;
+                    case AUTOMOWER_OPERATE_AUTO:
+                        $this->ModeMower("auto");
+                        break;
+                     case AUTOMOWER_OPERATE_MANUAL:
+                        $this->ModeMower("manual");
                         break;
                     default:
                         $this->SendDebug(__FUNCTION__, "invalid value \"$Value\" for $Ident", 0);
@@ -623,9 +665,9 @@ class RobonectDevice2 extends IPSModule
         return $code;
     }
 
-    public function ParkMower()
+    public function ModeMower(string $mode)
     {
-        return $this->MowerCmd('home');
+        return $this->MowerCmd($mode);
     }
 
     public function StartMower()
@@ -635,7 +677,7 @@ class RobonectDevice2 extends IPSModule
 
     public function StopMower()
     {
-        return $this->MowerCmd('STOP');
+        return $this->MowerCmd('stop');
     }
 
     private function MowerCmd($cmd)
