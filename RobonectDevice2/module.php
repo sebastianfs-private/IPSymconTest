@@ -270,6 +270,8 @@ class RobonectDevice2 extends IPSModule
             $this->SetValue('Connected', false);
             return false;
         }
+
+        $this->SetValue('Connected', true);
         
         $this->SendDebug(__FUNCTION__, 'status=' . print_r($status['successful'], true), 0);
 
