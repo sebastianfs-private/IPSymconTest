@@ -359,8 +359,8 @@ class RobonectDevice2 extends IPSModule
         $this->SendDebug(__FUNCTION__, 'mowerStatus="' . $mowerStatus, 0);
         $this->SetValue('MowerStatus', $mowerStatus);
 
-        $mowerActivity = $this->decode_mowerStatus($data['status']['status']);
-        $this->SendDebug(__FUNCTION__, 'mowerActivity="' . $data['status']['status'] . '" => MowerActivity=' . $mowerActivity, 0);
+        $mowerActivity = $data['status']['status'];
+        $this->SendDebug(__FUNCTION__, 'mowerActivity="' . $mowerActivity, 0);
         $this->SetValue('MowerActivity', $mowerActivity);
 
         // $oldActivity = $this->GetValue('MowerActivity');
