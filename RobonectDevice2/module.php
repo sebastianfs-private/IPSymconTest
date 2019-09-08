@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../libs/common.php';  // globale Funktionen
 require_once __DIR__ . '/../libs/library.php';  // modul-bezogene Funktionen
-
+//
 // normalized MowerStatus
 if (!defined('AUTOMOWER_ACTIVITY_ERROR')) {
     define('AUTOMOWER_ACTIVITY_ERROR', -1);
