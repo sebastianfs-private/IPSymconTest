@@ -137,6 +137,7 @@ class RobonectDevice2 extends IPSModule
         $this->CreateVarProfile('Robonect.Connection', VARIABLETYPE_BOOLEAN, '', 0, 0, 0, 1, 'Alarm', $associations);
 
         $this->CreateVarProfile('Robonect.Battery', VARIABLETYPE_INTEGER, ' %', 1, 0, 100, 1, 'Battery');
+        $this->CreateVarProfile('Robonect.Blade', VARIABLETYPE_INTEGER, ' %', 1, 0, 100, 1, 'EnergyProduction');
         $this->CreateVarProfile('Robonect.Location', VARIABLETYPE_FLOAT, ' °', 0, 0, 0, 5, '');
         $this->CreateVarProfile('Robonect.Duration', VARIABLETYPE_INTEGER, ' min', 0, 0, 0, 0, 'Hourglass');
         $this->CreateVarProfile('Robonect.Temperature', VARIABLETYPE_INTEGER, ' °C', -20, 50, 0, 0, 'Temperature');
@@ -180,6 +181,7 @@ class RobonectDevice2 extends IPSModule
         $this->MaintainVariable('Name', $this->Translate('Name'), VARIABLETYPE_STRING, '', $vpos++, true);
         $this->MaintainVariable('Battery', $this->Translate('Battery capacity'), VARIABLETYPE_INTEGER, 'Robonect.Battery', $vpos++, true);
         $this->MaintainVariable('Temperature', $this->Translate('Temperature'), VARIABLETYPE_INTEGER, 'Robonect.Temperature', $vpos++, true);
+        $this->MaintainVariable('BladeQuality', $this->Translate('Blade quality'), VARIABLETYPE_INTEGER, 'Robonect.Blade', $vpos++, true);
         $this->MaintainVariable('OperationHours', $this->Translate('Operating hours'), VARIABLETYPE_INTEGER, 'Robonect.Hours', $vpos++, true);
         $this->MaintainVariable('OperationMode', $this->Translate('Operation mode'), VARIABLETYPE_INTEGER, 'Robonect.Mode', $vpos++, true);
         $this->MaintainVariable('TimerMode', $this->Translate('Timer mode'), VARIABLETYPE_INTEGER, 'Robonect.Timer', $vpos++, true);
@@ -309,6 +311,9 @@ class RobonectDevice2 extends IPSModule
 
         $temperature = $data['health']['temperature'];
         $this->SetValue('Temperature', $temperature);
+
+        $quality = $data['blades']['quality'];
+        $this->SetValue('BladeQuality', $quality);
 
         $omode = $data['status']['mode'];
         $this->SetValue('OperationMode', $omode);
